@@ -1,0 +1,10 @@
+{
+  "languageMode": "strict",
+  "aliases": {
+    "lune": "~/.lune/.typedefs/0.8.9/",
+    "vendor": "vendor/",
+    "pkg": "Packages/",
+    "ui": "src/client/ui/",
+    "ext": "external/"
+  }
+}

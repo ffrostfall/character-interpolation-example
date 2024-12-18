@@ -1,0 +1,14 @@
+vendor
+Packages
+
+build
+build.rbxl
+
+# Project place file
+/sduioajfodslg.rbxlx
+
+# Roblox Studio lock files
+/*.rbxlx.lock
+/*.rbxl.lock
+
+sourcemap.json

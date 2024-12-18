@@ -1,0 +1,5 @@
+option Casing = Camel
+option TypesOutput = "../build/net/types.luau"
+option ServerOutput = "../build/net/server.luau"
+option ClientOutput = "../build/net/client.luau"
+option ManualReplication = true

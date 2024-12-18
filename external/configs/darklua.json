@@ -1,0 +1,34 @@
+{
+	"process": [
+		{
+			"current": {
+				"name": "path",
+				"sources": {
+					"@lune": "~/.lune/.typedefs/0.8.9/",
+					"@vendor": "../vendor/",
+					"@pkg": "../Packages/",
+					"@ui": "../src/client/ui/",
+					"@ext": "../external/",
+					"@net": "net/"
+				}
+			},
+			"rule": "convert_require",
+			"target": {
+				"indexing_style": "wait_for_child",
+				"name": "roblox",
+				"rojo_sourcemap": "darklua-sourcemap.json"
+			}
+		},
+		{
+			"rule": "inject_global_value",
+			"identifier": "target",
+			"env": "target"
+		},
+		{
+			"rule": "remove_unused_if_branch"
+		},
+		{
+			"rule": "compute_expression"
+		}
+	]
+}

@@ -1,0 +1,57 @@
+{
+	"name": "decayingwinter",
+	"tree": {
+		"$className": "DataModel",
+
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+
+			"server": {
+				"$path": "src/server"
+			},
+
+			"gameRunner": {
+				"$path": "src/runtime/rblx.server.luau"
+			}
+		},
+
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+
+			"shared": {
+				"$path": "src/shared"
+			},
+
+			"assets": {
+				"$path": "assets/instances"
+			},
+
+			"stories": {
+				"$path": "stories"
+			},
+
+			"vendor": {
+				"$path": "vendor"
+			},
+
+			"Packages": {
+				"$path": "Packages"
+			},
+
+			"network": {
+				"$path": "build/net"
+			}
+		},
+
+		"ReplicatedFirst": {
+			"$className": "ReplicatedFirst",
+
+			"gameRunner": {
+				"$path": "src/runtime/rblx.client.luau"
+			},
+			"client": {
+				"$path": "src/client"
+			}
+		}
+	}
+}
