@@ -3,16 +3,36 @@
 registry = "test"
 
 [[package]]
-name = "alicesaidhi/vide"
-version = "0.3.1-lite.649"
+name = "alicesaidhi/jabby"
+version = "0.2.0-rc.5"
+dependencies = [["jecs", "ukendio/jecs@0.4.0"], ["pebble", "alicesaidhi/pebble@0.1.0-rc.9"], ["t", "corecii/greentea@0.4.10"], ["vide", "centau/vide@0.3.1"]]
+
+[[package]]
+name = "alicesaidhi/pebble"
+version = "0.1.0-rc.9"
+dependencies = [["vide", "centau/vide@0.3.1"]]
+
+[[package]]
+name = "centau/vide"
+version = "0.3.1"
+dependencies = []
+
+[[package]]
+name = "corecii/greentea"
+version = "0.4.10"
+dependencies = []
+
+[[package]]
+name = "ffrostfall/luausignal"
+version = "0.3.0"
 dependencies = []
 
 [[package]]
 name = "ffrostfall/sduioajfodslg"
 version = "0.1.0"
-dependencies = [["ui-labs", "pepeeltoro41/ui-labs@2.3.0"], ["vide", "alicesaidhi/vide@0.3.1-lite.649"]]
+dependencies = [["jabby", "alicesaidhi/jabby@0.2.0-rc.5"], ["signal", "ffrostfall/luausignal@0.3.0"]]
 
 [[package]]
-name = "pepeeltoro41/ui-labs"
-version = "2.3.0"
+name = "ukendio/jecs"
+version = "0.4.0"
 dependencies = []

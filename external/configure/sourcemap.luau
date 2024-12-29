@@ -11,6 +11,7 @@ return function()
 		"build/default.project.json",
 		"--output",
 		"build/darklua-sourcemap.json",
+		"--include-non-scripts",
 	}))
 
 	async(spawnProcess("rojo", {

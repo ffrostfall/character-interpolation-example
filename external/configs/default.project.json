@@ -1,7 +1,24 @@
 {
-	"name": "decayingwinter",
+	"name": "character-interpolation",
 	"tree": {
 		"$className": "DataModel",
+
+		"Workspace": {
+			"$className": "Workspace",
+			"$ignoreUnknownInstances": true,
+
+			"map": {
+				"$className": "Folder"
+			},
+
+			"characters": {
+				"$className": "Folder"
+			},
+
+			"serverSimulation": {
+				"$className": "Camera"
+			}
+		},
 
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
@@ -20,18 +37,6 @@
 
 			"shared": {
 				"$path": "src/shared"
-			},
-
-			"assets": {
-				"$path": "assets/instances"
-			},
-
-			"stories": {
-				"$path": "stories"
-			},
-
-			"vendor": {
-				"$path": "vendor"
 			},
 
 			"Packages": {

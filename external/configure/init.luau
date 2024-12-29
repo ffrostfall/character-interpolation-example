@@ -8,7 +8,6 @@ local moveDarkluaConfig = require("./moveDarkluaConfig")
 local moveProjectFiles = require("./moveProjectFiles")
 local reconcileDirectories = require("../reconcileDirectories")
 local sourcemap = require("./sourcemap")
-local stories = require("./stories")
 
 local configure = {}
 
@@ -22,7 +21,6 @@ function configure.all()
 
 	sourcemap()
 
-	stories()
 	game()
 end
 

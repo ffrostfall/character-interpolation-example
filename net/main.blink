@@ -3,3 +3,52 @@ option TypesOutput = "../build/net/types.luau"
 option ServerOutput = "../build/net/server.luau"
 option ClientOutput = "../build/net/client.luau"
 option ManualReplication = true
+
+type NetworkId = u32
+
+struct CharacterTransform {
+	position: vector<f16>,
+	yRotation: u8,
+}
+
+struct Snapshot {
+	transforms: map { [NetworkId]: CharacterTransform },
+	timestamp: f64,
+}
+
+event sendLocalPosition {
+	From: Client,
+	Call: SingleAsync,
+	Type: Unreliable,
+	Poll: true,
+	
+	Data: CharacterTransform,
+}
+
+event sendSnapshot {
+	From: Server,
+	Call: SingleAsync,
+	Type: Unreliable,
+	Poll: true,
+	
+	Data: Snapshot
+}
+
+event addCharacterBatch {
+	From: Server,
+	Call: SingleAsync,
+	Type: Reliable,
+	
+	Data: struct {
+		networkId: NetworkId,
+		owner: f64?,
+	}[0..644]
+}
+
+event removeCharacterBatch {
+	From: Server,
+	Call: SingleAsync,
+	Type: Reliable,
+	
+	Data: NetworkId[0..655]
+}

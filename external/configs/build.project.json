@@ -1,11 +1,24 @@
 {
-	"name": "decayingwinter",
+	"name": "character-interpolation",
 	"tree": {
 		"$className": "DataModel",
 
 		"Workspace": {
 			"$properties": {
 				"StreamingEnabled": false
+			},
+			"$ignoreUnknownInstances": true,
+
+			"map": {
+				"$className": "Folder"
+			},
+
+			"characters": {
+				"$className": "Folder"
+			},
+
+			"serverSimulation": {
+				"$className": "Camera"
 			}
 		},
 
@@ -32,18 +45,6 @@
 
 			"shared": {
 				"$path": "game/shared"
-			},
-
-			"assets": {
-				"$path": "../assets/instances"
-			},
-
-			"stories": {
-				"$path": "stories/"
-			},
-
-			"vendor": {
-				"$path": "../vendor"
 			},
 
 			"Packages": {

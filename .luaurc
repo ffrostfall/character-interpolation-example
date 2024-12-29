@@ -1,10 +1,15 @@
 {
-  "languageMode": "strict",
-  "aliases": {
-    "lune": "~/.lune/.typedefs/0.8.9/",
-    "vendor": "vendor/",
-    "pkg": "Packages/",
-    "ui": "src/client/ui/",
-    "ext": "external/"
-  }
+	"languageMode": "strict",
+	"aliases": {
+		"pkg": "Packages/",
+		"vendor": "vendor/",
+		"client": "src/client/",
+		"shared": "src/shared/",
+		"server": "src/server/",
+		"ui": "src/client/userInterface/",
+		"network": "build/net/",
+		"tests": "tests/",
+		"lune": "~/.lune/.typedefs/0.8.9/",
+		"ext": "external/"
+	}
 }
