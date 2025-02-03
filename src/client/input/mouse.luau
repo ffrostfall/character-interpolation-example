@@ -21,7 +21,7 @@ function mouse._input_changed(input_object: InputObject, gameProcessedEvent: boo
 	accumulated_delta += delta
 end
 
-function mouse._read_delta(): vector
+function mouse.read_delta(): vector
 	local delta = accumulated_delta
 	accumulated_delta = vector.zero
 

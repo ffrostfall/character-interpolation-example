@@ -2,12 +2,12 @@ local jecs = require("@shared/jecs")
 local component = require("@shared/util/component")
 local networkTypes = require("@net/types")
 
-export type RemoteHumanoid = {
+export type AnchoredRig = {
 	root: Part,
 	model: Model,
 }
 
-export type LocalHumanoid = {
+export type SimulatedRig = {
 	orientation: AlignOrientation,
 	attachment: Attachment,
 	root: Part,
@@ -16,31 +16,22 @@ export type LocalHumanoid = {
 	model: Model,
 }
 
-export type HumanoidInput = {
+export type Input = {
 	camera_vector: vector,
 	move_vector: vector,
 }
 
 return {
-	Debug = component.new() :: jecs.Entity<>,
-
-	HumanoidInput = component.new() :: jecs.Entity<HumanoidInput>,
-
-	RemoteHumanoid = component.new() :: jecs.Entity<RemoteHumanoid>,
-	OwnedBy = component.new() :: jecs.Entity<Player>,
-	LocalHumanoid = component.new() :: jecs.Entity<LocalHumanoid>,
-
-	-- All models are required to have a primarypart
-	Model = component.new() :: jecs.Entity<{
-		inst: Model,
-		primary_part: BasePart,
-	}>,
-
-	-- Changing Transform is going to add the models primarypart and the models cframe to the bulkmoveto queue
-	Transform = component.new() :: jecs.Entity<CFrame>,
-
-	-- Read-only transform value taken from a physically simulated model
-	PhysicsTransform = component.new() :: jecs.Entity<CFrame>,
-
 	Networked = component.new() :: jecs.Entity<networkTypes.NetworkId>,
+
+	AnchoredRig = component.new() :: jecs.Entity<AnchoredRig>,
+	SimulatedRig = component.new() :: jecs.Entity<SimulatedRig>,
+	Input = component.new() :: jecs.Entity<Input>,
+
+	OwnedBy = component.new() :: jecs.Entity<Player>,
+
+	PrimaryPart = component.new() :: jecs.Entity<BasePart>,
+	Physics = component.new() :: jecs.Entity,
+
+	Transform = component.new() :: jecs.Entity<CFrame>,
 }

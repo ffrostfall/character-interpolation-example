@@ -1,6 +1,7 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
+local ServerScriptService = game:GetService("ServerScriptService")
 
 local jabby = require("@pkg/jabby")
 local network = require("@net/server")
@@ -10,9 +11,10 @@ local data_model = require("@shared/data_model")
 local components = require("@shared/components")
 local characters = require("@server/characters")
 local phases = require("@shared/frame/phases")
+local require_descendants = require("@shared/util/require_descendants")
 
-require("@shared/systems")
-require("@server/systems")
+require_descendants(ReplicatedStorage.shared.systems)
+require_descendants(ServerScriptService.server.systems)
 
 local server = {}
 
@@ -48,7 +50,6 @@ function server.init()
 		class_name = "World",
 		name = "main",
 		world = world,
-		debug = components.Debug,
 		entities = {},
 	})
 	jabby.public.updated = true
@@ -80,4 +81,4 @@ function server.add_player(player: Player)
 	characters.spawn_character(player, CFrame.new(0, 50, 0))
 end
 
-return server
+server.init()

@@ -11,7 +11,7 @@ ray_params.FilterDescendantsInstances = { workspace.characters }
 ray_params.FilterType = Enum.RaycastFilterType.Exclude
 
 return frame.on("physics", function()
-	for _, LocalHumanoid in world:query(components.LocalHumanoid):iter() do
+	for _, LocalHumanoid in world:query(components.SimulatedRig):iter() do
 		local hit_floor = workspace:Blockcast(LocalHumanoid.root.CFrame, LocalHumanoid.root.Size, DIRECTION, ray_params)
 
 		LocalHumanoid.position.Enabled = hit_floor ~= nil

@@ -1,6 +1,6 @@
 local components = require("@shared/components")
 
-return function(network_id: number): components.LocalHumanoid
+return function(): components.SimulatedRig
 	local root_part = Instance.new("Part")
 	root_part.Name = "root"
 	root_part.Anchored = false
@@ -37,10 +37,8 @@ return function(network_id: number): components.LocalHumanoid
 	movement.Parent = root_part
 
 	local model = Instance.new("Model")
-	model.Name = tostring(network_id)
 
 	root_part.Parent = model
-	model.PrimaryPart = root_part
 
 	return {
 		root = root_part,

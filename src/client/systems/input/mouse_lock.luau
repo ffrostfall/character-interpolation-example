@@ -7,7 +7,7 @@ local components = require("@shared/components")
 return frame.on("input", function()
 	UserInputService.MouseBehavior = Enum.MouseBehavior.Default
 
-	for _ in world:query(components.LocalHumanoid):iter() do
+	for _ in world:query(components.SimulatedRig):iter() do
 		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
 	end
 end)

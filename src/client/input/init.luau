@@ -153,6 +153,4 @@ function input.sink_next(): symbolize_input.InputSymbol
 	return coroutine.yield()
 end
 
-function input.read_mouse_delta() end
-
 return input

@@ -18,7 +18,7 @@ return frame.on("physics", function()
 			continue
 		end
 
-		if world:has(ent, components.LocalHumanoid) then
+		if world:has(ent, components.SimulatedRig) then
 			continue
 		end
 

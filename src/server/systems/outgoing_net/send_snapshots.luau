@@ -22,11 +22,13 @@ return frame.on("outgoing_net", function()
 		}
 	end
 
-	for _, Networked, PhysicsTransform in world:query(components.Networked, components.PhysicsTransform):iter() do
-		local _, y_rot, _ = PhysicsTransform:ToOrientation()
+	for _, Networked, Transform in
+		world:query(components.Networked, components.Transform):with(components.Physics):iter()
+	do
+		local _, y_rot, _ = Transform:ToOrientation()
 
 		transforms[Networked] = {
-			position = PhysicsTransform.Position,
+			position = Transform.Position,
 			y_rot = y_rot,
 		}
 	end

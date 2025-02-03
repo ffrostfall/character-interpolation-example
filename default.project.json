@@ -15,8 +15,7 @@
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
 
-			"server": { "$path": "src/server" },
-			"runner": { "$path": "src/runtime/rblx.server.luau" }
+			"server": { "$path": "src/server" }
 		},
 
 		"ReplicatedStorage": {
@@ -26,7 +25,6 @@
 			"packages": { "$path": "Packages" },
 			"network": { "$path": "net/out" },
 
-			"runner": { "$path": "src/runtime/rblx.client.luau" },
 			"client": { "$path": "src/client" }
 		}
 	}

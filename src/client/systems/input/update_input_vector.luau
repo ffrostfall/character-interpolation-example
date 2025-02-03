@@ -18,7 +18,7 @@ return frame.on("input", function()
 	local move_vector = vector.create(xAxis, 0, zAxis)
 	local normalized_move_vector = remove_nan(vector.normalize(move_vector))
 
-	for _, HumanoidInput in world:query(components.HumanoidInput):iter() do
+	for _, HumanoidInput in world:query(components.Input):iter() do
 		HumanoidInput.move_vector = normalized_move_vector
 	end
 end)

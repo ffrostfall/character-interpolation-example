@@ -1,5 +1,6 @@
 {
 	"name": "character-interpolation",
+	"emitLegacyScripts": false,
 	"tree": {
 		"$className": "DataModel",
 
@@ -15,8 +16,7 @@
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
 
-			"server": { "$path": "build/server" },
-			"runner": { "$path": "build/runtime/rblx.server.luau" }
+			"server": { "$path": "build/server" }
 		},
 
 		"ReplicatedStorage": {
@@ -26,8 +26,13 @@
 			"packages": { "$path": "Packages" },
 			"network": { "$path": "net/out/" },
 
-			"runner": { "$path": "build/runtime/rblx.client.luau" },
 			"client": { "$path": "build/client" }
+		},
+
+		"Players": {
+			"$properties": {
+				"CharacterAutoLoads": false
+			}
 		}
 	}
 }

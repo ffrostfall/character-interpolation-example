@@ -4,7 +4,7 @@ local world = require("@shared/world")
 local components = require("@shared/components")
 
 return frame.on("outgoing_net", function()
-	for _, LocalHumanoid, Networked in world:query(components.LocalHumanoid, components.Networked):iter() do
+	for _, LocalHumanoid, Networked in world:query(components.SimulatedRig, components.Networked):iter() do
 		local position = LocalHumanoid.root.CFrame.Position
 		local _, y_rot, _ = LocalHumanoid.root.CFrame:ToOrientation()
 

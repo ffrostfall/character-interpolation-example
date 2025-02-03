@@ -1,6 +1,6 @@
 local components = require("@shared/components")
 
-return function(network_id: number): components.RemoteHumanoid
+return function(): components.AnchoredRig
 	local root_part = Instance.new("Part")
 	root_part.Name = "root"
 	root_part.Anchored = true
@@ -8,10 +8,7 @@ return function(network_id: number): components.RemoteHumanoid
 	root_part.Size = vector.create(2, 2, 1)
 
 	local model = Instance.new("Model")
-	model.Name = tostring(network_id)
-
 	root_part.Parent = model
-	model.PrimaryPart = root_part
 
 	return {
 		root = root_part,

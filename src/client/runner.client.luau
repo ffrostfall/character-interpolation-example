@@ -6,14 +6,14 @@ local network = require("@net/client")
 local add_components_under_instance = require("@shared/util/add_components_under_instance")
 local world = require("@shared/world")
 local data_model = require("@shared/data_model")
-local components = require("@shared/components")
 local phases = require("@shared/frame/phases")
 local input = require("@client/input")
 local characters = require("@client/characters")
 local controls = require("@client/controls")
+local require_descendants = require("@shared/util/require_descendants")
 
-require("@shared/systems")
-require("@client/systems")
+require_descendants(ReplicatedStorage.client.systems)
+require_descendants(ReplicatedStorage.shared.systems)
 
 local client = {}
 
@@ -58,7 +58,6 @@ function client.init()
 		class_name = "World",
 		name = "main",
 		world = world,
-		debug = components.Debug,
 		entities = {},
 	})
 	jabby.public.updated = true
@@ -72,4 +71,4 @@ function client.init()
 	end)
 end
 
-return client
+client.init()
