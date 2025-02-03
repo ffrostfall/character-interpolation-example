@@ -1,5 +1,5 @@
 [tools]
-darklua = "seaofvoices/darklua@0.15.0"
+darklua = "seaofvoices/darklua@0.16.0"
 rojo = "rojo-rbx/rojo@7.4.4"
 lune = "lune-org/lune@0.8.9"
 wally-package-types = "johnnymorganz/wally-package-types@1.4.1"

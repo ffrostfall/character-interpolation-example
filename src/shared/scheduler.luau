@@ -1,6 +1,11 @@
 --#selene: allow(empty_loop, unused_variable, shadowing)
 --!native
 --!optimize 2
+
+--[[
+	This isn't my code, this is a scheduler created by Marcus taken from the jecs demo.
+]]
+
 local jabby = require("@pkg/jabby")
 local jecs = require("@shared/jecs")
 local luauSignal = require("@pkg/signal")

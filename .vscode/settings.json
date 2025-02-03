@@ -3,41 +3,35 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnSave": true
 	},
-	
+
 	"[luau]": {
 		"editor.defaultFormatter": "JohnnyMorganz.stylua",
 		"editor.formatOnSave": true
 	},
-	"editor.detectIndentation": false,
-	"editor.insertSpaces": false,
 
+	"luau-lsp.types.definitionFiles": [".vscode/vectorTypes.d.luau"],
+	
 	"luau-lsp.completion.imports.separateGroupsWithLine": true,
 	"luau-lsp.completion.imports.suggestRequires": false,
 	"luau-lsp.completion.imports.suggestServices": true,
+
 	"luau-lsp.diagnostics.strictDatamodelTypes": true,
 	"luau-lsp.ignoreGlobs": [
 		"**/_Index/**",
-		"build/**",
-		"build",
-		"legacy/**",
-		"build_stories/**",
-		"build_stories",
-		"net_output/**",
-		"lunePackages/**",
+		".vscode/**",
 		"vendor/**",
-		"Packages/**",
-		".vscode/**"
+		
+		"build/**",
+		"**/out/**"
 	],
+
 	"luau-lsp.sourcemap.autogenerate": false,
 	"luau-lsp.sourcemap.enabled": true,
-	"luau-lsp.sourcemap.includeNonScripts": true,
-	"luau-lsp.sourcemap.sourcemapFile": "build/lsp-sourcemap.json",
-	"luau-lsp.types.definitionFiles": [".vscode/vectorTypes.d.luau"],
+	"luau-lsp.sourcemap.sourcemapFile": "sourcemap.json",
+
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+
 	"prettier.useTabs": true,
-	"stylua.targetReleaseVersion": "latest",
-	"workbench.editor.customLabels.enabled": true,
-	"workbench.editor.customLabels.patterns": {
-		"**/init.lua": "${dirname} (${filename}.${extname})",
-		"**/init.luau": "${dirname} (${filename}.${extname})"
-	}
+	"stylua.targetReleaseVersion": "latest"
 }

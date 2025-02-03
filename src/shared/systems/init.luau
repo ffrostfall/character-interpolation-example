@@ -1,5 +1,5 @@
-local recursiveRequire = require("@shared/util/dynamicRecursiveRequire")
+local require_descendants = require("@shared/util/require_descendants")
 
-recursiveRequire(script)
+require_descendants(script)
 
 return true

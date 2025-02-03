@@ -2,20 +2,14 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-ReplicatedStorage:WaitForChild("Packages")
-ReplicatedStorage.Packages:WaitForChild("_Index")
-
 local jabby = require("@pkg/jabby")
-local logger = require("@shared/logger")
-local network = require("@network/server")
-local registerComponentsUnderInstance = require("@shared/util/registerComponentsUnderInstance")
+local network = require("@net/server")
+local add_components_under_instance = require("@shared/util/add_components_under_instance")
 local world = require("@shared/world")
-local dataModel = require("@shared/dataModel")
+local data_model = require("@shared/data_model")
 local components = require("@shared/components")
 local characters = require("@server/characters")
 local phases = require("@shared/frame/phases")
-
-local loggerObject = logger.new("server")
 
 require("@shared/systems")
 require("@server/systems")
@@ -25,27 +19,26 @@ local server = {}
 function server.init()
 	local startTime = os.clock()
 
-	registerComponentsUnderInstance(ReplicatedStorage.shared.components)
+	add_components_under_instance(ReplicatedStorage.shared.components)
 
-	dataModel.init()
+	data_model.init()
 
 	RunService.PreSimulation:Connect(function(deltaTime)
-		dataModel.syncFrom()
+		data_model.sync_from()
 
-		phases.incomingNetwork.signal:fire(deltaTime)
-
+		phases.incoming_net.signal:fire(deltaTime)
 		phases.physics.signal:fire(deltaTime)
 
-		dataModel.bulkUpdateCFrame()
+		data_model.bulk_update()
 
-		phases.outgoingNetwork.signal:fire(deltaTime)
+		phases.outgoing_net.signal:fire(deltaTime)
 
 		network.stepReplication()
 	end)
 
 	phases.scheduler.systems.begin(phases.scheduler.collect.all())
 
-	local endTime = os.clock()
+	local end_time = os.clock()
 
 	jabby.set_check_function(function()
 		return true
@@ -60,18 +53,18 @@ function server.init()
 	})
 	jabby.public.updated = true
 
-	loggerObject:warn(`code loaded in {string.format("%.02f", (endTime - startTime) * 1000)}ms`)
+	print(`code loaded in {string.format("%.02f", (end_time - startTime) * 1000)}ms`)
 
 	for _, player in Players:GetPlayers() do
-		server.addPlayer(player)
+		server.add_player(player)
 	end
 
-	Players.PlayerAdded:Connect(server.addPlayer)
-	Players.PlayerRemoving:Connect(server.removePlayer)
+	Players.PlayerAdded:Connect(server.add_player)
 end
 
-function server.addPlayer(player: Player)
+function server.add_player(player: Player)
 	local batch = {}
+
 	for ent, Networked in world:query(components.Networked):iter() do
 		local owner = world:get(ent, components.OwnedBy)
 
@@ -80,13 +73,11 @@ function server.addPlayer(player: Player)
 			owner = owner and owner.UserId,
 		})
 	end
-	network.addCharacterBatch.fire(player, batch)
+	network.add_character_batch.fire(player, batch)
 
 	task.wait(3)
 
-	characters.spawnCharacter(player, CFrame.new(0, 50, 0))
+	characters.spawn_character(player, CFrame.new(0, 50, 0))
 end
-
-function server.removePlayer(player: Player) end
 
 return server

@@ -1,23 +1,16 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-ReplicatedStorage:WaitForChild("Packages")
-ReplicatedStorage.Packages:WaitForChild("_Index")
-
-local _systems = require("@client/systems")
 local jabby = require("@pkg/jabby")
-local logger = require("@shared/logger")
-local network = require("@network/client")
-local registerComponentsUnderInstance = require("@shared/util/registerComponentsUnderInstance")
+local network = require("@net/client")
+local add_components_under_instance = require("@shared/util/add_components_under_instance")
 local world = require("@shared/world")
-local dataModel = require("@shared/dataModel")
+local data_model = require("@shared/data_model")
 local components = require("@shared/components")
 local phases = require("@shared/frame/phases")
 local input = require("@client/input")
 local characters = require("@client/characters")
 local controls = require("@client/controls")
-
-local loggerObject = logger.new("client")
 
 require("@shared/systems")
 require("@client/systems")
@@ -27,9 +20,9 @@ local client = {}
 function client.init()
 	local startTime = os.clock()
 
-	registerComponentsUnderInstance(ReplicatedStorage.shared.components)
+	add_components_under_instance(ReplicatedStorage.shared.components)
 
-	dataModel.init()
+	data_model.init()
 
 	RunService.RenderStepped:Connect(function(deltaTime)
 		phases.input.signal:fire(deltaTime)
@@ -37,15 +30,15 @@ function client.init()
 	end)
 
 	RunService.PreSimulation:Connect(function(deltaTime)
-		phases.incomingNetwork.signal:fire(deltaTime)
+		phases.incoming_net.signal:fire(deltaTime)
 
-		dataModel.syncFrom()
+		data_model.sync_from()
 
 		phases.physics.signal:fire(deltaTime)
 
-		dataModel.bulkUpdateCFrame()
+		data_model.bulk_update()
 
-		phases.outgoingNetwork.signal:fire(deltaTime)
+		phases.outgoing_net.signal:fire(deltaTime)
 
 		network.stepReplication()
 	end)
@@ -70,12 +63,12 @@ function client.init()
 	})
 	jabby.public.updated = true
 
-	loggerObject:warn(`code loaded in {string.format("%.02f", (endTime - startTime) * 1000)}ms`)
+	print(`code loaded in {string.format("%.02f", (endTime - startTime) * 1000)}ms`)
 
-	local jabbyclient = jabby.obtain_client() :: any
+	local jabby_client = jabby.obtain_client() :: any
 
 	controls.DEBUGGER.tapped:connect(function()
-		jabbyclient.spawn_app(jabbyclient.apps.home)
+		jabby_client.spawn_app(jabby_client.apps.home)
 	end)
 end
 

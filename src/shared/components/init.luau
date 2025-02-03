@@ -1,6 +1,6 @@
 local jecs = require("@shared/jecs")
 local component = require("@shared/util/component")
-local networkTypes = require("@network/types")
+local networkTypes = require("@net/types")
 
 export type RemoteHumanoid = {
 	root: Part,
@@ -17,8 +17,8 @@ export type LocalHumanoid = {
 }
 
 export type HumanoidInput = {
-	cameraVector: vector,
-	moveVector: vector,
+	camera_vector: vector,
+	move_vector: vector,
 }
 
 return {
@@ -33,7 +33,7 @@ return {
 	-- All models are required to have a primarypart
 	Model = component.new() :: jecs.Entity<{
 		inst: Model,
-		primaryPart: BasePart,
+		primary_part: BasePart,
 	}>,
 
 	-- Changing Transform is going to add the models primarypart and the models cframe to the bulkmoveto queue

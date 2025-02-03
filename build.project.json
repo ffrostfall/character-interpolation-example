@@ -1,0 +1,33 @@
+{
+	"name": "character-interpolation",
+	"tree": {
+		"$className": "DataModel",
+
+		"Workspace": {
+			"$className": "Workspace",
+			"$ignoreUnknownInstances": true,
+
+			"map": { "$className": "Folder" },
+			"characters": { "$className": "Folder" },
+			"server_simulation": { "$className": "Camera" }
+		},
+
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+
+			"server": { "$path": "build/server" },
+			"runner": { "$path": "build/runtime/rblx.server.luau" }
+		},
+
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+
+			"shared": { "$path": "build/shared" },
+			"packages": { "$path": "Packages" },
+			"network": { "$path": "net/out/" },
+
+			"runner": { "$path": "build/runtime/rblx.client.luau" },
+			"client": { "$path": "build/client" }
+		}
+	}
+}

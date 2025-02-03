@@ -1,14 +1,14 @@
 option Casing = Camel
-option TypesOutput = "../build/net/types.luau"
-option ServerOutput = "../build/net/server.luau"
-option ClientOutput = "../build/net/client.luau"
+option TypesOutput = "out/types.luau"
+option ServerOutput = "out/server.luau"
+option ClientOutput = "out/client.luau"
 option ManualReplication = true
 
 type NetworkId = u32
 
 struct CharacterTransform {
 	position: vector<f16>,
-	yRotation: u8,
+	y_rot: u8,
 }
 
 struct Snapshot {
@@ -16,7 +16,7 @@ struct Snapshot {
 	timestamp: f64,
 }
 
-event sendLocalPosition {
+event send_local_position {
 	From: Client,
 	Call: SingleAsync,
 	Type: Unreliable,
@@ -25,7 +25,7 @@ event sendLocalPosition {
 	Data: CharacterTransform,
 }
 
-event sendSnapshot {
+event send_snapshot {
 	From: Server,
 	Call: SingleAsync,
 	Type: Unreliable,
@@ -34,7 +34,7 @@ event sendSnapshot {
 	Data: Snapshot
 }
 
-event addCharacterBatch {
+event add_character_batch {
 	From: Server,
 	Call: SingleAsync,
 	Type: Reliable,
@@ -45,7 +45,7 @@ event addCharacterBatch {
 	}[0..644]
 }
 
-event removeCharacterBatch {
+event remove_character_batch {
 	From: Server,
 	Call: SingleAsync,
 	Type: Reliable,

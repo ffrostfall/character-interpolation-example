@@ -1,0 +1,26 @@
+{
+	"process": [
+		{
+			"current": {
+				"name": "path"
+			},
+			"rule": "convert_require",
+			"target": {
+				"indexing_style": "wait_for_child",
+				"name": "roblox",
+				"rojo_sourcemap": "sourcemap.json"
+			}
+		},
+		{
+			"rule": "inject_global_value",
+			"identifier": "target",
+			"env": "target"
+		},
+		{
+			"rule": "remove_unused_if_branch"
+		},
+		{
+			"rule": "compute_expression"
+		}
+	]
+}

@@ -7,10 +7,10 @@ local scheduler = require("@shared/scheduler").new(world, {})
 export type Context = "server" | "client" | "shared"
 
 export type PhaseNames =
-	| "incomingNetwork"
+	| "incoming_net"
 	| "physics"
-	| "gameTick"
-	| "outgoingNetwork"
+	| "game_tick"
+	| "outgoing_net"
 	| "input"
 	| "animations"
 	| "postProcessing"
@@ -19,26 +19,26 @@ type PhaseDict = { signal: signal.Identity<number>, entity: jecs.Entity, context
 
 local function phase(context: Context): PhaseDict
 	local signal: signal.Identity<number> = signal()
-	local phaseEntity = world:entity()
-	world:add(phaseEntity, scheduler.components.Phase)
-	world:set(phaseEntity, scheduler.components.Event, signal)
+	local ent = world:entity()
+
+	world:add(ent, scheduler.components.Phase)
+	world:set(ent, scheduler.components.Event, signal)
 
 	return {
 		signal = signal,
-		entity = phaseEntity,
+		entity = ent,
 		context = context,
 	}
 end
 
 local phases = {
-	incomingNetwork = phase("shared"),
+	incoming_net = phase("shared"),
 	physics = phase("shared"),
-	gameTick = phase("shared"),
+	game_tick = phase("shared"),
 	input = phase("shared"),
-	outgoingNetwork = phase("shared"),
+	outgoing_net = phase("shared"),
 
 	animations = phase("client"),
-	postProcessing = phase("client"),
 }
 
 phases.scheduler = scheduler

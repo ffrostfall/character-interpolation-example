@@ -1,142 +1,158 @@
 local UserInputService = game:GetService("UserInputService")
 
-local inputTypedef = require("@shared/typedefs/inputTypedef")
-local logger = require("@shared/logger").new()
-local luauSignal = require("@pkg/signal")
-local symbolizeInput = require("./symbolizeInput")
+local mouse = require("./mouse")
+local signal = require("@pkg/signal")
+local symbolize_input = require("./symbolize_input")
+
+export type TapActionConfig = {
+	kind: "tap",
+	input: symbolize_input.InputSymbol,
+}
+
+export type HoldActionConfig = {
+	kind: "hold",
+	input: symbolize_input.InputSymbol,
+	hold_duration: number,
+}
+
+type RegisterActionFunction = (config: TapActionConfig) -> () | (config: HoldActionConfig) -> ()
 
 type TapAction = Action & {
-	tapped: luauSignal.Identity<()>,
+	tapped: signal.Identity<()>,
 	kind: "tap",
 }
-local function tapAction(defaultInputSymbol: inputTypedef.InputSymbol): TapAction
+local function tap_action(default_input_symbol: symbolize_input.InputSymbol): TapAction
 	return {
-		tapped = luauSignal(),
+		tapped = signal(),
 
-		inputSymbol = defaultInputSymbol,
+		input = default_input_symbol,
 		kind = "tap" :: "tap",
 	}
 end
 
-type LongPressAction = Action & {
-	started: luauSignal.Identity<()>,
-	ended: luauSignal.Identity<()>,
-	cancelled: luauSignal.Identity<()>,
+type long_pressAction = Action & {
+	started: signal.Identity<()>,
+	ended: signal.Identity<()>,
+	cancelled: signal.Identity<()>,
 
-	kind: "longPress",
+	kind: "long_press",
 	_pressed: number,
 }
-local function longPressAction(defaultInputSymbol: inputTypedef.InputSymbol): LongPressAction
+local function long_press_action(default_input_symbol: symbolize_input.InputSymbol): long_pressAction
 	return {
-		started = luauSignal(),
-		ended = luauSignal(),
-		cancelled = luauSignal(),
+		started = signal(),
+		ended = signal(),
+		cancelled = signal(),
 
-		inputSymbol = defaultInputSymbol,
-		kind = "longPress" :: "longPress",
+		input = default_input_symbol,
+		kind = "long_press" :: "long_press",
 		_pressed = 0,
 	}
 end
 
 type HeldAction = Action & {
-	beingHeld: boolean,
+	being_held: boolean,
 
 	kind: "held",
 }
-local function heldAction(defaultInputSymbol: inputTypedef.InputSymbol): HeldAction
+local function held_action(default_input_symbol: symbolize_input.InputSymbol): HeldAction
 	return {
-		beingHeld = false,
+		being_held = false,
 
-		inputSymbol = defaultInputSymbol,
+		input = default_input_symbol,
 		kind = "held" :: "held",
 	}
 end
 
 type Action = {
-	inputSymbol: inputTypedef.InputSymbol,
+	input: symbolize_input.InputSymbol,
 }
-type AnyAction = TapAction | LongPressAction | HeldAction
+type AnyAction = TapAction | long_pressAction | HeldAction
 
-local activeSinkThread: thread?
-local inputSymbolToAction: { [inputTypedef.InputSymbol]: AnyAction } = {}
+local active_sink_thread: thread?
+local input_symbol_to_action: { [symbolize_input.InputSymbol]: AnyAction } = {}
 local queue = {}
 
 local input = {}
 
 function input.init()
-	UserInputService.InputBegan:Connect(input._insertIntoQueue)
-	UserInputService.InputEnded:Connect(input._insertIntoQueue)
+	mouse.init()
+
+	UserInputService.InputBegan:Connect(input._insert_into_queue)
+	UserInputService.InputEnded:Connect(input._insert_into_queue)
 end
 
-function input.isKeyDown(keyCode: Enum.KeyCode): boolean
+function input.is_key_down(keyCode: Enum.KeyCode): boolean
 	return UserInputService:IsKeyDown(keyCode)
 end
 
-function input.queueRef(): { InputObject }
+function input.queue_ref(): { InputObject }
 	return queue
 end
 
-function input._insertIntoQueue(inputObject: InputObject, gameProcessed: boolean)
-	if gameProcessed then
+function input._insert_into_queue(input_object: InputObject, game_processed: boolean)
+	if game_processed then
 		return
 	end
 
-	table.insert(queue, inputObject)
+	table.insert(queue, input_object)
 end
 
-function input._mapInputSymbolToAction(symbol: inputTypedef.InputSymbol): AnyAction?
-	return inputSymbolToAction[symbol]
+function input._map_input_symbol_to_action(symbol: symbolize_input.InputSymbol): AnyAction?
+	return input_symbol_to_action[symbol]
 end
 
-function input._freeSinkThread(): thread?
-	if not activeSinkThread then
+function input._free_sink_thread(): thread?
+	if not active_sink_thread then
 		return
 	end
 
-	local threadRef = activeSinkThread
-	activeSinkThread = nil
+	local threadRef = active_sink_thread
+	active_sink_thread = nil
 
 	return threadRef
 end
 
-function input.changeActionInput(action: Action, newActionInput: inputTypedef.InputSymbol)
-	local oldInputSymbol = action.inputSymbol
-	inputSymbolToAction[oldInputSymbol] = nil
+function input.change_action_input(action: Action, newActionInput: symbolize_input.InputSymbol)
+	local old_input_symbol = action.input
+	input_symbol_to_action[old_input_symbol] = nil
 
-	action.inputSymbol = newActionInput
-	inputSymbolToAction[newActionInput] = action :: AnyAction
+	action.input = newActionInput
+	input_symbol_to_action[newActionInput] = action :: AnyAction
 end
 
-local function createAction(
-	actionKind: "held" | "longPress" | "tap",
-	inputType: Enum.UserInputType,
-	keyCode: Enum.KeyCode
+local function create_action(
+	action_kind: "held" | "long_press" | "tap",
+	input_type: Enum.UserInputType,
+	key_code: Enum.KeyCode
 ): AnyAction
-	local inputSymbol = symbolizeInput.fromEnums(inputType, keyCode)
-	if not inputSymbol then
-		return logger:fatal(`failed to symbolize input {inputType} {keyCode}`)
+	local input_symbol = symbolize_input.from_enum(input_type, key_code)
+	if not input_symbol then
+		return error(`failed to symbolize input {input_type} {key_code}`)
 	end
 
 	local action: AnyAction
-	if actionKind == "held" then
-		action = heldAction(inputSymbol)
-	elseif actionKind == "longPress" then
-		action = longPressAction(inputSymbol)
-	elseif actionKind == "tap" then
-		action = tapAction(inputSymbol)
+	if action_kind == "held" then
+		action = held_action(input_symbol)
+	elseif action_kind == "long_press" then
+		action = long_press_action(input_symbol)
+	elseif action_kind == "tap" then
+		action = tap_action(input_symbol)
 	end
 
-	inputSymbolToAction[inputSymbol] = action :: AnyAction
+	input_symbol_to_action[input_symbol] = action :: AnyAction
 
 	return action
 end
 
-input.createAction =
-	createAction :: ((actionKind: "held", inputType: Enum.UserInputType, keyCode: Enum.KeyCode?) -> HeldAction) & ((actionKind: "longPress", inputType: Enum.UserInputType, keyCode: Enum.KeyCode?) -> LongPressAction) & ((actionKind: "tap", inputType: Enum.UserInputType, keyCode: Enum.KeyCode?) -> TapAction)
+input.create_action =
+	create_action :: ((action_kind: "held", input_type: Enum.UserInputType, key_code: Enum.KeyCode?) -> HeldAction) & ((action_kind: "long_press", input_type: Enum.UserInputType, key_code: Enum.KeyCode?) -> long_pressAction) & ((action_kind: "tap", input_type: Enum.UserInputType, key_code: Enum.KeyCode?) -> TapAction)
 
-function input.sinkNext(): inputTypedef.InputSymbol
-	activeSinkThread = coroutine.running()
+function input.sink_next(): symbolize_input.InputSymbol
+	active_sink_thread = coroutine.running()
 	return coroutine.yield()
 end
+
+function input.read_mouse_delta() end
 
 return input

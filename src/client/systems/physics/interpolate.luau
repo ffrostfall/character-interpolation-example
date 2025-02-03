@@ -7,13 +7,13 @@ local components = require("@shared/components")
 local world = require("@shared/world")
 
 return frame.on("physics", function()
-	local interpolated = interpolation.at(os.clock() - RENDER_BUFFER)
-	if not interpolated then
+	local interpolated_transforms = interpolation.at(os.clock() - RENDER_BUFFER)
+	if not interpolated_transforms then
 		return warn("no interpolation result, from extrapolation")
 	end
 
-	for networkId, transform in interpolated do
-		local ent = characters.fromId(networkId)
+	for network_id, transform in interpolated_transforms do
+		local ent = characters.from_id(network_id)
 		if not ent then
 			continue
 		end

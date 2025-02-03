@@ -1,10 +1,10 @@
 local input = require("@client/input")
 
 return {
-	FORWARD = input.createAction("held", Enum.UserInputType.Keyboard, Enum.KeyCode.W),
-	BACKWARD = input.createAction("held", Enum.UserInputType.Keyboard, Enum.KeyCode.S),
-	LEFT = input.createAction("held", Enum.UserInputType.Keyboard, Enum.KeyCode.A),
-	RIGHT = input.createAction("held", Enum.UserInputType.Keyboard, Enum.KeyCode.D),
+	FORWARD = input.create_action("held", Enum.UserInputType.Keyboard, Enum.KeyCode.W),
+	BACKWARD = input.create_action("held", Enum.UserInputType.Keyboard, Enum.KeyCode.S),
+	LEFT = input.create_action("held", Enum.UserInputType.Keyboard, Enum.KeyCode.A),
+	RIGHT = input.create_action("held", Enum.UserInputType.Keyboard, Enum.KeyCode.D),
 
-	DEBUGGER = input.createAction("tap", Enum.UserInputType.Keyboard, Enum.KeyCode.E),
+	DEBUGGER = input.create_action("tap", Enum.UserInputType.Keyboard, Enum.KeyCode.E),
 }

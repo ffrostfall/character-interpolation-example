@@ -1,5 +1,5 @@
-local recursiveRequire = require("@shared/util/dynamicRecursiveRequire")
+local add_components_under_instance = require("@shared/util/add_components_under_instance")
 
-recursiveRequire(script)
+add_components_under_instance(script)
 
 return true
