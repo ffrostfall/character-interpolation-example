@@ -6,6 +6,7 @@ local network_types = require("@net/types")
 
 local snapshot_timeline: { [number]: network_types.Snapshot } = {}
 
+-- Two functions for both directions for maximum optimization
 local function find_snapshot_before(timestamp: number): network_types.Snapshot?
 	-- we can assume that order of timestamps is guranteed, iterate backwards
 	for i = SNAPSHOT_HISTORY_LENGTH, 1, -1 do
@@ -41,6 +42,7 @@ local function absolute_angle(angle: number): number
 	return angle % TAU
 end
 
+-- Finds the shorter route between two angles. This is to deal with the case e.g. 45 degrees going to -45 by reducing 90 degrees.
 local function find_shortest_angle(angle0: number, angle1: number): number
 	local diff1 = absolute_angle(angle1 - angle0)
 	local diff2 = absolute_angle(angle0 - angle1)
@@ -63,6 +65,7 @@ local interpolation = {}
 function interpolation.add_snapshot(snapshot: network_types.Snapshot)
 	table.insert(snapshot_timeline, snapshot)
 
+	-- Apply our maximum snapshot count here
 	if #snapshot_timeline > SNAPSHOT_HISTORY_LENGTH then
 		table.remove(snapshot_timeline, 1)
 	end
@@ -72,6 +75,7 @@ function interpolation.at(render_timestamp: number): { [number]: CFrame }?
 	local before = find_snapshot_before(render_timestamp)
 	local after = find_snapshot_after(render_timestamp)
 
+	-- If we can't have two snapshots, we can't interpolate.
 	if before == nil or after == nil then
 		return
 	end
@@ -91,8 +95,11 @@ function interpolation.at(render_timestamp: number): { [number]: CFrame }?
 		local time_since_first_snapshot = render_timestamp - start_time
 
 		local alpha = time_since_first_snapshot / snapshot_delta_time
+
 		local position = lerp_vector(transform.position, after_transform.position, alpha)
 		local rotation = lerp_angle(transform.y_rot, after_transform.y_rot, alpha)
+
+		-- Manually construct the CFrame for optimal performance.
 		local sin, cos = math.sin(rotation), math.cos(rotation)
 
 		--stylua: ignore
